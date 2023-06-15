@@ -65,6 +65,7 @@ void line()//边框
 void leaderboard()//排行榜
 {
 	system("cls");
+	line();
 	cursor(25, 20);
 	printf("排行榜");
 	int key = getch();
@@ -105,6 +106,7 @@ void help()
 void endmenu()
 {
 	system("cls");
+	line();
 	cursor(60, 20);
 	printf("感谢游玩");
 	exit(0);
@@ -204,9 +206,6 @@ void reprintplane()//重绘飞机
 }
 void reprintbullet()
 {
-
-	
-	
 
 }
 void printbullet()
