@@ -2,17 +2,23 @@
 #include<stdlib.h>
 #include<windows.h>
 #include<conio.h>
+#include<time.h>
 void cursor(int x, int y);
 struct Plane {
 	int x=65;
 	int y=44;
-}plane;
+}plane;//飞机坐标
 struct Player
 {
 	int score = 0;
 	char name[10];
 }player;
 int bullet[100];
+void HideCursor()
+{
+	CONSOLE_CURSOR_INFO cursor_info = { 1, 0 }; 
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
+}
 void mainmenu();
 void startmenu();
 void start();
@@ -24,6 +30,7 @@ void printplane();
 void reprintplane();
 int main()
 {
+	HideCursor();
 	Sleep(2000);
 	mainmenu ();
 	while(true)
@@ -34,14 +41,14 @@ int main()
 	
 	return 0;
 }
-void cursor(int x, int y)
+void cursor(int x, int y)//定位控制台坐标
 {
 	COORD pos;
 	pos.X = x;
 	pos.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
-void line()
+void line()//边框
 {
 
 	cursor(0, 0);
@@ -55,7 +62,7 @@ void line()
 		printf("*");
 	}
 }
-void leaderboard()
+void leaderboard()//排行榜
 {
 	system("cls");
 	cursor(25, 20);
@@ -74,6 +81,7 @@ void leaderboard()
 void help()
 {
 	system("cls");
+	line();
 	cursor(50, 20);
 	printf("向 左   A");
 	cursor(50, 21);
@@ -102,7 +110,7 @@ void endmenu()
 	exit(0);
 
 }
-void mainmenu()
+void mainmenu()//主菜单
 {
 	system("cls");
 	line();
@@ -134,37 +142,36 @@ void mainmenu()
 		mainmenu();
 	}
 }
-void startmenu()
+void startmenu()//开始菜单
 {
 	system("cls");
 	cursor(25, 20);
 	printf("输入你的名字：");
 	scanf("%s", &player.name);
 	system("cls");
-
 	line();
 	cursor(140, 20);
 	printf("名字：%s", player.name);
 	cursor(140, 23);
 	printf("得分:%d", player.score);
 }
-void start()
+void start()//开始游戏
 {
 	reprintplane();
 }
-void printplane()
+void printplane()//打印飞机
 {
 	cursor(plane.x, plane.y);
 	printf("-***-");
 }
-void cleanplane()
+void cleanplane()//清除己方飞机
 {
 	cursor(plane.x, plane.y);
 	printf("     ");
 }
-void reprintplane()
+void reprintplane()//重绘飞机
 {
-	printplane();
+	
 	int key = getch();
 	if ((key == 65)&&(plane.x>2) )
 	{
@@ -178,10 +185,36 @@ void reprintplane()
 		plane.x += 2;
 		printplane();
 	}
-	if ((key ==57)&&(plane.y>1))
+	if ((key ==87)&&(plane.y>1))
 	{
 		cleanplane();
-		plane.x += 2;
+		plane.y-= 2;
 		printplane();
+	}
+	if ((key == 83) && (plane.y < 43))
+	{
+		cleanplane();
+		plane.y += 2;
+		printplane();
+	}
+	else
+	{
+		printplane();
+	}
+}
+void reprintbullet()
+{
+
+	
+	
+
+}
+void printbullet()
+{
+	int key=getch();
+	if (key==19)
+	{
+		cursor(plane.x + 2, plane.y + 1);
+		printf("ww");
 	}
 }
